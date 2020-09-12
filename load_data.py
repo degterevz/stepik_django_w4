@@ -6,12 +6,11 @@ picture_url = 'https://place-hold.it/100x60'
 
 def load():
     for specialty in specialties:
-        Specialty.objects.create(code=specialty['code'], title=specialty['title'],
-                                 picture=picture_url)
+        Specialty.objects.create(code=specialty['code'], title=specialty['title'])
 
     for company in companies:
         Company.objects.create(name=company['title'], location=company['location'],
-                               employee_count=company['employee_count'], logo=picture_url)
+                               employee_count=company['employee_count'])
 
     for job in jobs:
         specialty = Specialty.objects.get(code=job['cat'])

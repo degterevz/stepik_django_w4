@@ -1,18 +1,34 @@
+from django.contrib.auth.models import User
 from django.db import models
+
+from vacancies.settings import MEDIA_COMPANY_IMAGE_DIR, MEDIA_SPECIALITY_IMAGE_DIR
 
 
 class Specialty(models.Model):
     code = models.CharField(max_length=30)
     title = models.CharField(max_length=30)
-    picture = models.CharField(max_length=100)
+    picture = models.ImageField(upload_to=MEDIA_SPECIALITY_IMAGE_DIR,
+                                height_field='height_field', width_field='width_field')
+    height_field = models.PositiveIntegerField(default=0)
+    width_field = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.code
 
 
 class Company(models.Model):
     name = models.CharField(max_length=64)
     location = models.CharField(max_length=64)
-    logo = models.CharField(max_length=100)
-    description = models.TextField()
+    logo = models.ImageField(upload_to=MEDIA_COMPANY_IMAGE_DIR,
+                             height_field='height_field', width_field='width_field')
+    height_field = models.PositiveIntegerField(default=0)
+    width_field = models.PositiveIntegerField(default=0)
+    description = models.TextField(blank=True)
     employee_count = models.IntegerField(null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='companies', null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Vacancy(models.Model):
@@ -27,3 +43,11 @@ class Vacancy(models.Model):
 
     class Meta:
         ordering = ['-published_at']
+
+
+class Application(models.Model):
+    written_username = models.CharField(max_length=50)
+    written_phone = models.CharField(max_length=30)
+    written_cover_letter = models.TextField()
+    vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, related_name='applications', null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='applications', null=True)
