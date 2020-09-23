@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block container %}
+
+  <main class="container">
+    <div class="row">
+      <div class="col-8 col-lg-4 offset-2 offset-lg-4">
+        <form class="form-signin pt-5" method="post"  action="{% url 'login' %}">
+            {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+          <div class="text-center mt-5 b-1">
+            <h1 class="h3 mb-3 font-weight-normal">Джуманджи</h1>
+            <p class="h5 font-weight-light">Войдите, чтобы управлять</p>
+          </div>
+          <div class="mt-5 form-label-group">
+            <p class="text-muted">Логин</p>
+              <input type="text" name="username" class="form-control" required autofocus
+                value="{% if form.username.value %}{{ form.username.value }}{% endif %}">
+            <label for="inputLogin"></label>
+          </div>
+          <div class="form-label-group">
+            <p class="text-muted"> Пароль</p>
+            <input type="password" name="password" class="form-control" required>
+            <label for="inputPassword"></label>
+          </div>
+          <div class="checkbox mb-3"></div>
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Войти</button>
+        </form>
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger"><p class="text-center">Вы ввели неверные данные</p></div>
+        {% endif %}
+
+        <div class="mt-4 text-center"><p>Нет аккаунта? <a href="/register">Зарегистрируйтесь!</a></p></div>
+      </div>
+    </div>
+  </main>
+
+{% endblock %}

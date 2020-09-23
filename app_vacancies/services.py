@@ -6,13 +6,14 @@ def vacancies_by_specialties():
     Пытался добиться минимального количества запросов к ДБ
     :return: словарь {специализация : вакансии по этой специализации}
     """
-    data = dict()
+    vacancies = dict()
     for specialty in Specialty.objects.all():
-        data[specialty] = []
-
+        if specialty is not None:
+            vacancies[specialty] = []
     for vacancy in Vacancy.objects.select_related():
-        data[vacancy.specialty].append(vacancy)
-    return data
+        if vacancy.specialty is not None:
+            vacancies[vacancy.specialty].append(vacancy)
+    return vacancies
 
 
 def vacancies_in_specialty(code):
@@ -22,7 +23,7 @@ def vacancies_in_specialty(code):
     :param code: код специализации
     :return: словарь {специализация : вакансии по этой специализации}
     """
-    data = dict()
+    vacancies = dict()
     specialty = Specialty.objects.filter(code=code).first()
-    data[specialty] = specialty.vacancies.all()
-    return data
+    vacancies[specialty] = specialty.vacancies.all()
+    return vacancies

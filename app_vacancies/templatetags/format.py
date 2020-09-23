@@ -8,4 +8,7 @@ def format_int(value):
     """
     Разбивает число на разряды
     """
-    return '{0:,}'.format(value).replace(',', ' ')
+    if value:
+        return '{0:,}'.format(value).replace(',', ' ')
+    else:
+        return value

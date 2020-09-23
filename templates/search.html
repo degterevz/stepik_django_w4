@@ -1,13 +1,28 @@
 {% extends 'base.html' %}
 
 {% block container %}
+
   <main class="container mt-3">
     <section>
 
-        {% for specialty, vacancies in vacancies_specialties.items %}
-      <h1 class="h1 text-center mx-auto mt-4 pt-5" style="font-size: 70px;"><strong>{{ specialty.title }}</strong></h1>
-      <p class="text-center pt-1">
-          {% if vacancies|length == 0 %}Нет вакансий{% else %}{{ vacancies|length }} вакансий{% endif %}</p>
+        <h1 class="h1 text-center mt-5 mb-4">Поиск вакансий</h1>
+
+        <div class="row">
+            <div class="col-12 col-md-8 col-lg-6 offset-lg-3 offset-md-2">
+
+            <form class="form-inline mb-3">
+            <div class="form-group col-8 col-md-10 pl-0">
+              <input class="form-control w-100" type="search" name="s" value="{{ query }}" placeholder="Найти работу или стажировку" aria-label="Найти работу или стажировку">
+            </div>
+            <div class="form-group col-4 col-md-2 pl-0">
+              <button class="btn btn-primary w-100" type="submit">Найти</button>
+            </div>
+          </form>
+
+            </div>
+        </div>
+          <p class="text-center">{% if vacancies|length == 0 %}Нет вакансий{% else %}Найдено {{ vacancies|length }} вакансий{% endif %} </p>
+
       <div class="row mt-5">
         <div class="col-12 col-lg-8 offset-lg-2 m-auto">
             {% for vacancy in vacancies %}
@@ -28,10 +43,8 @@
             </div>
           </div>
             {% endfor %}
-
         </div>
       </div>
-    {% endfor %}
     </section>
   </main>
 

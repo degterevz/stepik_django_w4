@@ -1,0 +1,56 @@
+{% extends 'base_my_company.html' %}
+
+{% block container_my_company %}
+
+
+      <div class="col-12 col-lg-8">
+        <div class="card">
+          <div class="card-body px-4 pb-4">
+            <section class="tab-pane fade show active">
+              <h2 class="h4 pt-2 pb-3">Вакансии</h2>
+                {% if vacancies %}
+                {% for vacancy in vacancies %}
+              <div class="card mt-3">
+                <div class="card-body px-4">
+                  <div class="row align-items-center">
+                    <div class="col-6 col-lg-8">
+                      <a href="{% url 'vacancies_details' vacancy.id %}" class="mb-1">{{ vacancy.title }}</a>
+                      <p class="mb-1">
+                          {% load format %}
+                        <span class="mr-4">{{ vacancy.salary_min|format_int }} - {{ vacancy.salary_max|format_int }}</span>
+                          <a href="#" class="text-info">
+                              {% if vacancy.applications.count == 0 %}
+                                Нет
+                              {% else %}
+                                {{ vacancy.applications.count }}
+                              {% endif %}
+                              откликов</a>
+                      </p>
+                    </div>
+                    <div class="col-6 col-lg-4 text-right">
+                      <a href="{% url 'my_vacancy' vacancy.id %}" class="btn btn-outline-info">Изменить</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                {% endfor %}
+            {% else %}
+                    <p class="alert alert-info" role="alert">У вас пока нет вакансий, но вы можете создать первую!</p>
+            {% endif %}
+
+
+
+            </section>
+            <form action="{{ request.path }}" method="post">
+              {% csrf_token %}
+              <input type="submit" class="mt-3 btn btn-info" value="  Добавить вакансию  ">
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+{% endblock %}
