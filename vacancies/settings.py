@@ -4,7 +4,6 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
 SECRET_KEY = 'qz5&i2x32a!x029=^h6ck9&=qobn9h!au+%yx+5s1!4e5)6q$2'
 
 DEBUG = True
@@ -112,7 +111,7 @@ MEDIA_SPECIALITY_IMAGE_DIR = 'speciality_images'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = 'login/'
-LANGUAGE_CODE='ru'
+LANGUAGE_CODE = 'ru'
 
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
