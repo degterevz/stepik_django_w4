@@ -53,7 +53,17 @@ class VacancyForm(ModelForm):
 class ResumeForm(ModelForm):
     class Meta:
         model = Resume
-        fields = '__all__'
+        fields = [
+            'name',
+            'surname',
+            'status',
+            'salary',
+            'specialty',
+            'grade',
+            'education',
+            'experience',
+            'portfolio',
+        ]
 
 
     def __init__(self, *args, **kwargs):

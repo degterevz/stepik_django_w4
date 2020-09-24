@@ -269,6 +269,7 @@ class MyResumeView(LoginRequiredMixin, View):
 
             update = False
             form = ResumeForm(request.POST, instance=resume)
+            print(form)
             if form.is_valid():
                 update = True
                 form.save()
