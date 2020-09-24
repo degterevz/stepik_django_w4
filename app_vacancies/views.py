@@ -10,8 +10,8 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.views import View
 from django.views.generic import CreateView
 
-from app_vacancies.forms import RegisterForm, CompanyForm, VacancyForm, ApplicationForm
-from app_vacancies.models import Specialty, Company, Vacancy, Application
+from app_vacancies.forms import RegisterForm, CompanyForm, VacancyForm, ApplicationForm, ResumeForm
+from app_vacancies.models import Specialty, Company, Vacancy, Application, Resume
 from app_vacancies.services import vacancies_by_specialties, vacancies_in_specialty
 
 
@@ -117,7 +117,7 @@ class MyCompanyView(LoginRequiredMixin, View):
         except ObjectDoesNotExist:
             # Создаем компанию с пустыми полями
             Company.objects.create(owner=request.user)
-            return render(request, 'company-edit.html')
+            return redirect('my_company')
         except MultipleObjectsReturned:
             raise Http404
 
@@ -244,10 +244,47 @@ class SearchView(View):
 
 
 # проверил
+class MyResumeView(LoginRequiredMixin, View):
+    """
+    View с разделом резюме пользователя. Доступен только авторизованным пользователям.
+    """
+    login_url = '/login/'
 
+    def get(self, request):
+        try:
+            resume = Resume.objects.get(user=request.user)
+            form = ResumeForm(instance=resume)
+            return render(request, 'resume-edit.html', context={'form': form})
+        except ObjectDoesNotExist:
+            return render(request, 'resume-create.html')
+        except MultipleObjectsReturned:
+            raise Http404
 
-class MyResumeView(View):
-    pass
+    def post(self, request):
+        """
+        Обработка запросов на изменение или создание резюме.
+        """
+        try:
+            resume = Resume.objects.get(user=request.user)
+
+            update = False
+            form = ResumeForm(request.POST, instance=resume)
+            if form.is_valid():
+                update = True
+                form.save()
+            return render(request, 'resume-edit.html', context={
+                'form': form,
+                'update': update
+            })
+
+        except ObjectDoesNotExist:
+            # Создаем новое резюме с пустыми полями
+            Resume.objects.create(user=request.user,
+                                  name=request.user.first_name,
+                                  surname=request.user.last_name)
+            return redirect('my_resume')
+        except MultipleObjectsReturned:
+            raise Http404
 
 
 def custom_handler403(request, exception):

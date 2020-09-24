@@ -51,3 +51,31 @@ class Application(models.Model):
     written_cover_letter = models.TextField()
     vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, related_name='applications', null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='applications', null=True)
+
+
+class Resume(models.Model):
+    class Status(models.TextChoices):
+        not_looking_for_job = 'NJ', 'Не ищу работу'
+        considering_offers = 'CO', 'Рассматриваю предложения'
+        looking_for_job = 'LJ', 'Ищу работу'
+
+    class Grade(models.TextChoices):
+        intern = 'IN', 'Стажер'
+        junior = 'JR', 'Джуниор'
+        middle = 'MD', 'Миддл'
+        senior = 'SR', 'Синьор'
+        lead = 'LD', 'Лид'
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='resume', blank=True,
+                             verbose_name='Пользователь')
+    name = models.CharField(max_length=64, verbose_name='Имя')
+    surname = models.CharField(max_length=64, verbose_name='Фамилия')
+    status = models.CharField(choices=Status.choices, max_length=30, verbose_name='Готовность к работе')
+    salary = models.IntegerField(default=0, blank=True, verbose_name='Ожидаемое вознаграждение')
+    specialty = models.ForeignKey(Specialty, on_delete=models.CASCADE, related_name="resume", null=True, blank=True,
+                                  verbose_name='Специализация')
+    grade = models.CharField(choices=Grade.choices, max_length=30, verbose_name='Квалификация')
+    education = models.TextField(null=True, blank=True, default='', verbose_name='Образование')
+    experience = models.TextField(null=True, blank=True, default='', verbose_name='Опыт работы')
+    portfolio = models.CharField(max_length=300, null=True, blank=True, default='',
+                                 verbose_name='Ссылка на портфолио')
