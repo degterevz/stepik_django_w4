@@ -21,7 +21,7 @@ def vacancies_in_specialty(code):
     Возвращает словарь той же структуры, что и vacancies_by_specialties, только с 1 специализацией.
     (Для возможности использования одного шаблона)
     :param code: код специализации
-    :return: словарь {специализация : вакансии по этой специализации}
+    :return: словарь {специализация: вакансии по этой специализации}
     """
     vacancies = dict()
     specialty = Specialty.objects.filter(code=code).first()
