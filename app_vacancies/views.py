@@ -43,6 +43,7 @@ class VacanciesCategoryView(View):
 class VacanciesDetailsView(View):
     def get(self, request, id):
         vacancy = get_object_or_404(Vacancy, pk=id)
+
         return render(request, 'vacancy.html', context={
             'vacancy': vacancy,
             'auth': request.user.is_authenticated
@@ -72,7 +73,7 @@ class VacanciesSendApplicationView(LoginRequiredMixin, View):
                 'vacancy_id': request.POST['vacancy']
             })
         else:
-            pass
+            return Http404
 
 
 class MyCompanyView(LoginRequiredMixin, View):
